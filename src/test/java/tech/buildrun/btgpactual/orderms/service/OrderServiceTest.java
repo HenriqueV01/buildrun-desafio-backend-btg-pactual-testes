@@ -8,17 +8,18 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import tech.buildrun.btgpactual.orderms.entity.OrderEntity;
 import tech.buildrun.btgpactual.orderms.factoty.OrderCreatedEventFactory;
+import tech.buildrun.btgpactual.orderms.factoty.OrderEntityFactory;
 import tech.buildrun.btgpactual.orderms.repository.OrderRepository;
 
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class OrderServiceTest {
@@ -89,5 +90,32 @@ class OrderServiceTest {
 
         }
     }
+
+    @Nested
+    class findAllByCustomerId{
+
+        @Test
+        void shouldCallRepository() {
+            // ARRANGE
+            var customerId = 1L;
+            var pageRequest = PageRequest.of(0, 10);
+            doReturn(OrderEntityFactory.buildWithPage()).when(orderRepository).findAllByCustomerId(eq(customerId), eq(pageRequest));
+
+            // ACT
+            var response = orderService.findAllByCustomerId(customerId, pageRequest);
+
+            // ASSERT
+            verify(orderRepository, times(1)).findAllByCustomerId(eq(customerId), eq(pageRequest));
+
+        }
+
+        @Test
+        void shouldMapResponse() {
+
+        }
+
+    }
+
+    
    
 }

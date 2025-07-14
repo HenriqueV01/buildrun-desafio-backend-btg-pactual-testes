@@ -1,5 +1,7 @@
 package tech.buildrun.btgpactual.orderms.factoty;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import tech.buildrun.btgpactual.orderms.entity.OrderEntity;
 import tech.buildrun.btgpactual.orderms.entity.OrderItem;
 
@@ -20,4 +22,9 @@ public class OrderEntityFactory {
         return entity;
 
     }
+
+    public static Page<OrderEntity> buildWithPage(){
+        return new PageImpl<>(List.of(build()));
+    }
+
 }
